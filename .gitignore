@@ -1,0 +1,6 @@
+*.so
+.directory
+build
+cmake-build
+maudio.conf
+plugins.conf
