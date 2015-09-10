@@ -28,8 +28,8 @@ set_target_properties(player PROPERTIES PREFIX "" OUTPUT_NAME "Player" SUFFIX ".
 
 if(MAUDIO_PORTABLE EQUAL 1)
 	install(TARGETS player DESTINATION "res/plugins")
-	file(APPEND ../plugins.conf "plugin res/plugins/Player.mplug\n")
+	file(APPEND ../plugins.conf "plugin Player.mplug\n")
 else()
 	install(TARGETS player DESTINATION "share/maudio/plugins")
-	file(APPEND ../plugins.conf "plugin res/plugins/Player.mplug\n")
+	file(APPEND ../plugins.conf "plugin Player.mplug\n")
 endif()

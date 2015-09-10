@@ -4,26 +4,23 @@
  * See LICENSE.txt for the full license
  */
 
-#ifndef MAUDIO_FILEWRITER
-#define MAUDIO_FILEWRITER
+#ifndef MAUDIO_FILEREADER
+#define MAUDIO_FILEREADER
 
 #include "maudio/action/BaseAction.hpp"
+#include "maudio/audiodata/AudioBuffer.hpp"
+#include "maudio/audiodata/AudioInfo.hpp"
 #include "sndfile.h"
 #include <memory>
-#include <thread>
 #include <string>
+#include <mutex>
 
 namespace maudio{
 
-class FileWriter : public BaseAction{
+class FileReader : public BaseAction{
 public:
-	FileWriter();
-	virtual ~FileWriter();
-
-	void write(unsigned long pos, unsigned long length = 0);
-	void stopWriting();
-	bool setFileName(const char *path);
-	const char *getFileName();
+	FileReader();
+	virtual ~FileReader();
 
 	virtual IAudioBuffer *get(unsigned long pos, unsigned int length) noexcept;
 	virtual IAudioInfo *getInfo() noexcept;
@@ -40,12 +37,13 @@ public:
 	virtual void serialize(IMultiLevelStore *data) const;
 	virtual void deserialize(const IMultiLevelStore *data);
 
-private:
-	static void asyncWrite(FileWriter *writer, unsigned long pos, unsigned long length);
+	bool setFileName(const char *path);
+	const char *getFileName();
 
+private:
 	class Control : public IControl{
 	public:
-		Control(FileWriter *data);
+		Control(FileReader *data);
 		virtual ~Control();
 
 		virtual unsigned int getNumFunctions();
@@ -56,14 +54,14 @@ private:
 		virtual void stop();
 
 	private:
-		FileWriter *mData;
+		FileReader *mData;
 	};
 	std::shared_ptr<Control> mControl = std::make_shared<Control>(this);
 	
-	std::string mFile;
-	std::shared_ptr<std::thread> mThread;
-	bool mThreadWorking = false;
-	int mSuccess = 0;
+	std::string mFileName;
+	SNDFILE *mFile = NULL;
+	AudioInfo mAudioInfo;
+	mutable std::recursive_mutex mMutex;
 };
 
 } // maudio
@@ -73,6 +71,6 @@ extern "C" void* create();
 extern "C" void destroy(void *data);
 extern "C" const char *getName();
 
-#endif // MAUDIO_FILEWRITER
+#endif // MAUDIO_FILEREADER
 
 

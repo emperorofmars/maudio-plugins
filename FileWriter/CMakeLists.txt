@@ -27,7 +27,7 @@ set_target_properties(filewriter PROPERTIES PREFIX "" OUTPUT_NAME "FileWriter" S
 
 if(MAUDIO_PORTABLE EQUAL 1)
 	install(TARGETS filewriter DESTINATION "res/plugins")
-	file(APPEND ../plugins.conf "plugin res/plugins/FileWriter.mplug\n")
+	file(APPEND ../plugins.conf "plugin FileWriter.mplug\n")
 else()
 	install(TARGETS filewriter LIBRARY DESTINATION "plugins")
 endif()
