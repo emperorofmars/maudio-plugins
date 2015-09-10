@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.0)
 project(Player.mplug)
 
-set(MAUDIO_PORTABLE 0 CACHE BOOL "set portable install")
+if(NOT DEFINED MAUDIO_PARENT_PROJECT)
+	set(MAUDIO_PARENT_PROJECT 0)
+endif()
 
-if(MAUDIO_PORTABLE EQUAL 1)
+set(PORTABLE 0 CACHE BOOL "set portable install")
+
+if(PORTABLE EQUAL 1)
 	add_definitions("-DMAUDIO_PORTABLE=1")
 else()
 	add_definitions("-DMAUDIO_PORTABLE=0")
@@ -22,11 +26,16 @@ set(MAUDIO_PLAYER_SOURCE_FILES
 add_library(player SHARED ${MAUDIO_PLAYER_SOURCE_FILES})
 target_link_libraries(player -lportaudio)
 target_link_libraries(player -pthread)
-target_link_libraries(player maudio)
+
+if(${MAUDIO_PARENT_PROJECT} EQUAL 0)
+	target_link_libraries(player -lmaudio)
+else()
+	target_link_libraries(player maudio)
+endif()
 
 set_target_properties(player PROPERTIES PREFIX "" OUTPUT_NAME "Player" SUFFIX ".mplug")
 
-if(MAUDIO_PORTABLE EQUAL 1)
+if(PORTABLE EQUAL 1)
 	install(TARGETS player DESTINATION "res/plugins")
 	file(APPEND ../plugins.conf "plugin Player.mplug\n")
 else()

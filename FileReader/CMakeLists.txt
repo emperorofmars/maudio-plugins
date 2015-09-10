@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.0)
 project(FileReader.mplug)
 
-set(MAUDIO_PORTABLE 0 CACHE BOOL "set portable install")
+if(NOT DEFINED MAUDIO_PARENT_PROJECT)
+	set(MAUDIO_PARENT_PROJECT 0)
+endif()
 
-if(MAUDIO_PORTABLE EQUAL 1)
+set(PORTABLE 0 CACHE BOOL "set portable install")
+
+if(PORTABLE EQUAL 1)
 	add_definitions("-DMAUDIO_PORTABLE=1")
 else()
 	add_definitions("-DMAUDIO_PORTABLE=0")
@@ -20,11 +24,16 @@ set(MAUDIO_FILEWRITER_SOURCE_FILES
 #maudio library
 add_library(filereader SHARED ${MAUDIO_FILEWRITER_SOURCE_FILES})
 target_link_libraries(filereader -lsndfile)
-target_link_libraries(filereader maudio)
+
+if(${MAUDIO_PARENT_PROJECT} EQUAL 0)
+	target_link_libraries(filereader -lmaudio)
+else()
+	target_link_libraries(filereader maudio)
+endif()
 
 set_target_properties(filereader PROPERTIES PREFIX "" OUTPUT_NAME "FileReader" SUFFIX ".mplug")
 
-if(MAUDIO_PORTABLE EQUAL 1)
+if(PORTABLE EQUAL 1)
 	install(TARGETS filereader DESTINATION "res/plugins")
 	file(APPEND ../plugins.conf "plugin FileReader.mplug\n")
 else()
