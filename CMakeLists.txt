@@ -10,7 +10,7 @@ add_subdirectory("Player")
 add_subdirectory("FileWriter")
 add_subdirectory("FileReader")
 
-if(MAUDIO_PORTABLE EQUAL 1)
+if(PORTABLE EQUAL 1)
 	install(FILES maudio.conf plugins.conf DESTINATION "res/config")
 else()
 endif()
