@@ -37,7 +37,7 @@ set_target_properties(mixer PROPERTIES PREFIX "" OUTPUT_NAME "Mixer" SUFFIX ".mp
 if(PORTABLE EQUAL 1)
 	install(TARGETS mixer DESTINATION "res/plugins")
 else()
-	install(TARGETS mixer DESTINATION "maudio/plugins")
+	install(TARGETS mixer DESTINATION "lib/maudio/plugins")
 endif()
 
 file(APPEND ../plugins.conf "plugin Mixer.mplug\n")

@@ -30,7 +30,7 @@ add_subdirectory("FileReader")
 if(PORTABLE EQUAL 1)
 	install(FILES plugins.conf DESTINATION "res/config")
 else()
-	install(FILES plugins.conf DESTINATION "maudio/config")
+	install(FILES plugins.conf DESTINATION "lib/maudio/config")
 endif()
 
 #create packages

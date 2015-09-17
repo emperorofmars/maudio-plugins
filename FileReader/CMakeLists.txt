@@ -37,7 +37,7 @@ set_target_properties(filereader PROPERTIES PREFIX "" OUTPUT_NAME "FileReader" S
 if(PORTABLE EQUAL 1)
 	install(TARGETS filereader DESTINATION "res/plugins")
 else()
-	install(TARGETS filereader DESTINATION "maudio/plugins")
+	install(TARGETS filereader DESTINATION "lib/maudio/plugins")
 endif()
 
 file(APPEND ../plugins.conf "plugin FileReader.mplug\n")
