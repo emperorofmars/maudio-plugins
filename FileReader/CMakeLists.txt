@@ -22,7 +22,7 @@ set(MAUDIO_FILEWRITER_SOURCE_FILES
 	${PROJECT_SOURCE_DIR}/FileReader.cpp
 )
 
-#maudio library
+#plugin shared object
 add_library(filereader SHARED ${MAUDIO_FILEWRITER_SOURCE_FILES})
 target_link_libraries(filereader -lsndfile)
 
@@ -36,7 +36,8 @@ set_target_properties(filereader PROPERTIES PREFIX "" OUTPUT_NAME "FileReader" S
 
 if(PORTABLE EQUAL 1)
 	install(TARGETS filereader DESTINATION "res/plugins")
-	file(APPEND ../plugins.conf "plugin FileReader.mplug\n")
 else()
-	install(TARGETS filereader LIBRARY DESTINATION "plugins")
+	install(TARGETS filereader DESTINATION "maudio/plugins")
 endif()
+
+file(APPEND ../plugins.conf "plugin FileReader.mplug\n")

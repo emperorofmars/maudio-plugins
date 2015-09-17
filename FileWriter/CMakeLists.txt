@@ -22,7 +22,7 @@ set(MAUDIO_FILEWRITER_SOURCE_FILES
 	${PROJECT_SOURCE_DIR}/FileWriter.cpp
 )
 
-#maudio library
+#plugin shared object
 add_library(filewriter SHARED ${MAUDIO_FILEWRITER_SOURCE_FILES})
 target_link_libraries(filewriter -lsndfile)
 target_link_libraries(filewriter -pthread)
@@ -37,7 +37,8 @@ set_target_properties(filewriter PROPERTIES PREFIX "" OUTPUT_NAME "FileWriter" S
 
 if(PORTABLE EQUAL 1)
 	install(TARGETS filewriter DESTINATION "res/plugins")
-	file(APPEND ../plugins.conf "plugin FileWriter.mplug\n")
 else()
-	install(TARGETS filewriter LIBRARY DESTINATION "plugins")
+	install(TARGETS filewriter DESTINATION "maudio/plugins")
 endif()
+
+file(APPEND ../plugins.conf "plugin FileWriter.mplug\n")

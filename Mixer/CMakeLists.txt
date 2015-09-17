@@ -22,7 +22,7 @@ set(MAUDIO_MIXER_SOURCE_FILES
 	${PROJECT_SOURCE_DIR}/Mixer.cpp
 )
 
-#maudio library
+#plugin shared object
 add_library(mixer SHARED ${MAUDIO_MIXER_SOURCE_FILES})
 target_link_libraries(mixer -pthread)
 
@@ -36,7 +36,8 @@ set_target_properties(mixer PROPERTIES PREFIX "" OUTPUT_NAME "Mixer" SUFFIX ".mp
 
 if(PORTABLE EQUAL 1)
 	install(TARGETS mixer DESTINATION "res/plugins")
-	file(APPEND ../plugins.conf "plugin Mixer.mplug\n")
 else()
-	install(TARGETS mixer LIBRARY DESTINATION "plugins")
+	install(TARGETS mixer DESTINATION "maudio/plugins")
 endif()
+
+file(APPEND ../plugins.conf "plugin Mixer.mplug\n")

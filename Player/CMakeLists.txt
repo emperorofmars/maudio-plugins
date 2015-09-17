@@ -23,7 +23,7 @@ set(MAUDIO_PLAYER_SOURCE_FILES
 	${PROJECT_SOURCE_DIR}/AudioDevice.cpp
 )
 
-#maudio library
+#plugin shared object
 add_library(player SHARED ${MAUDIO_PLAYER_SOURCE_FILES})
 target_link_libraries(player -lportaudio)
 target_link_libraries(player -pthread)
@@ -38,8 +38,8 @@ set_target_properties(player PROPERTIES PREFIX "" OUTPUT_NAME "Player" SUFFIX ".
 
 if(PORTABLE EQUAL 1)
 	install(TARGETS player DESTINATION "res/plugins")
-	file(APPEND ../plugins.conf "plugin Player.mplug\n")
 else()
-	install(TARGETS player DESTINATION "share/maudio/plugins")
-	file(APPEND ../plugins.conf "plugin Player.mplug\n")
+	install(TARGETS player DESTINATION "maudio/plugins")
 endif()
+
+file(APPEND ../plugins.conf "plugin Player.mplug\n")
